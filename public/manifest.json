@@ -1,0 +1,31 @@
+{
+  "name": "Ví Thông Minh - Quản Trị Thu Chi & Ngân Sách Cá Nhân",
+  "short_name": "Ví Thông",
+  "description": "Nền tảng số hóa quản lý tài chính cá nhân tinh gọn, giúp theo dõi dòng tiền thu chi hàng ngày tức thì, phân bổ định mức ngân sách linh hoạt theo danh mục và trực quan hóa sức khỏe tài chính bằng biểu đồ dòng tiền tự động.",
+  "start_url": "/",
+  "id": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "lang": "vi"
+}
