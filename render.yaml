@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: vi-thong-minh-quan-tri-thu-chi-25c8906d
+    runtime: python
+    plan: free
+    region: singapore
+    autoDeployTrigger: "off"
+    healthCheckPath: /healthz
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: APP_ID
+        value: "proj_25c8906ddaae"
+      - key: ROOT_MOTHERSHIP_URL
+        value: https://gemini-genesis-engine.onrender.com
+      - key: APP_KEY
+        generateValue: true
+      - key: ENROLL_CODE
+        sync: false
