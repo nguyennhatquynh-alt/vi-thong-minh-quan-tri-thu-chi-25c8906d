@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ví Thông Minh - Quản Trị Thu Chi & Ngân Sách Cá Nhân</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+    <script>window.GGE_SYNC=true;</script>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    <meta name="theme-color" content="#0f172a">
+</head>
+<body class="h-full flex flex-col antialiased select-none font-sans" x-data="childAppRuntime()" x-init="init()">
+    <header class="h-12 border-b border-slate-800 bg-slate-900/90 px-4 flex items-center justify-between shrink-0">
+        <span class="text-xs font-bold text-amber-400 font-mono tracking-wider truncate min-w-0 flex-1 mr-2 whitespace-nowrap">Ví Thông Minh - Quản Trị Thu Chi & Ngân Sách Cá Nhân</span>
+        <div class="flex items-center space-x-1 bg-slate-950 border border-slate-800 rounded-xl p-1 text-[11px] font-mono shrink-0 whitespace-nowrap">
+            <button @click="currentScreen = 'overview'" :class="currentScreen === 'overview' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'" class="px-2 py-0.5 rounded-lg transition">Tổng Quan</button>
+            <button @click="currentScreen = 'business'" :class="currentScreen === 'business' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'" class="px-2 py-0.5 rounded-lg transition">Nghiệp Vụ</button>
+            <button @click="currentScreen = 'payment'" :class="currentScreen === 'payment' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'" class="px-2 py-0.5 rounded-lg transition">Cổng VietQR</button>
+            <button @click="currentScreen = 'admin'" :class="currentScreen === 'admin' ? 'bg-amber-500 text-slate-950 font-bold' : 'text-slate-400'" class="px-2 py-0.5 rounded-lg transition">Quản Trị</button>
+        </div>
+    </header>
+
+    <main class="min-h-screen bg-slate-950 text-slate-300 p-4 sm:p-6 lg:p-8">
+  <!-- Màn hình Tổng quan -->
+  <div x-show="currentScreen === 'overview'" class="space-y-6">
+    <div class="border-b border-slate-800 pb-5">
+      <h1 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Ví Thông Minh - Quản Trị Thu Chi & Ngân Sách Cá Nhân</h1>
+      <p class="mt-2 text-slate-400 text-sm sm:text-base leading-relaxed">
+        Nền tảng số hóa quản lý tài chính cá nhân tinh gọn, giúp theo dõi dòng tiền thu chi hàng ngày tức thì, phân bổ định mức ngân sách linh hoạt theo danh mục và trực quan hóa sức khỏe tài chính bằng biểu đồ dòng tiền tự động.
+      </p>
+    </div>
+
+    <!-- Thẻ số liệu thực tế -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Dữ liệu đã ghi nhận</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-500/10 text-amber-500">Trực tiếp</span>
+        </div>
+        <div class="mt-4 flex items-baseline gap-2">
+          <span class="text-3xl font-extrabold text-white" x-text="$store.gge.items">0</span>
+          <span class="text-xs text-slate-400">bản ghi</span>
+        </div>
+        <p class="mt-2 text-xs text-slate-400">Tổng số mục dữ liệu tài chính đang lưu trên hệ thống.</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Trạng thái vận hành</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-400">Sẵn sàng</span>
+        </div>
+        <div class="mt-4">
+          <span class="text-base font-semibold text-white">Sổ thu chi & Kế hoạch ngân sách</span>
+        </div>
+        <p class="mt-2 text-xs text-slate-400">Hỗ trợ ghi chép thu chi, danh sách việc cần làm, ghi chú và sao lưu.</p>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm sm:col-span-2 lg:col-span-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Tính năng cung cấp</span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-500/10 text-amber-500">Hoạt động</span>
+        </div>
+        <div class="mt-3 space-y-1">
+          <p class="text-xs text-slate-300">• Sổ thu chi quản lý dòng tiền</p>
+          <p class="text-xs text-slate-300">• Danh sách việc cần làm tài chính</p>
+          <p class="text-xs text-slate-300">• Nhật ký & ghi chú chi tiêu</p>
+          <p class="text-xs text-slate-300">• Sao lưu dữ liệu an toàn</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Màn hình Nghiệp vụ chính -->
+  <div x-show="currentScreen === 'business'" class="space-y-6">
+    <div class="border-b border-slate-800 pb-4">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Khu Vực Nghiệp Vụ Quản Trị Tài Chính</h2>
+      <p class="mt-1 text-sm text-slate-400">Truy cập toàn bộ công cụ quản lý số liệu, kiểm soát thu chi và lưu trữ kế hoạch chi tiêu.</p>
+    </div>
+    
+    <section x-data="cap_expense()" x-init="init()" class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+  <h3 class="text-sm font-bold text-white">Sổ thu chi</h3>
+  <div class="grid grid-cols-3 gap-2 text-center">
+    <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl"><div class="text-[11px] text-slate-400">Thu</div><div class="text-sm font-bold text-emerald-400" x-text="money(sumIn)"></div></div>
+    <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl"><div class="text-[11px] text-slate-400">Chi</div><div class="text-sm font-bold text-rose-400" x-text="money(sumOut)"></div></div>
+    <div class="p-2 bg-slate-950 border border-slate-800 rounded-xl"><div class="text-[11px] text-slate-400">Còn lại</div><div class="text-sm font-bold text-amber-400" x-text="money(sumIn - sumOut)"></div></div>
+  </div>
+  <div class="flex space-x-2">
+    <button @click="type = 'out'" class="flex-1 py-1.5 rounded-lg text-xs font-bold" :class="type === 'out' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/40' : 'bg-slate-950 text-slate-400 border border-slate-800'">Khoản chi</button>
+    <button @click="type = 'in'" class="flex-1 py-1.5 rounded-lg text-xs font-bold" :class="type === 'in' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' : 'bg-slate-950 text-slate-400 border border-slate-800'">Khoản thu</button>
+  </div>
+  <input type="number" min="0" inputmode="numeric" x-model.number="amt" placeholder="Số tiền (VNĐ)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500">
+  <input x-model="text" placeholder="Ghi chú (không bắt buộc)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500">
+  <button @click="add()" class="w-full py-2 bg-amber-500 text-slate-950 font-bold text-sm rounded-xl">Ghi sổ</button>
+  <div class="space-y-1.5">
+    <template x-for="it in items" :key="it.id">
+      <div class="flex items-center justify-between p-2.5 bg-slate-950 border border-slate-800 rounded-xl">
+        <div class="min-w-0"><p class="text-sm text-slate-100 truncate" x-text="it.t || (it.type === 'in' ? 'Khoản thu' : 'Khoản chi')"></p><p class="text-[11px] text-slate-500" x-text="fmt(it.ts)"></p></div>
+        <div class="flex items-center space-x-2 shrink-0">
+          <span class="text-sm font-bold" :class="it.type === 'in' ? 'text-emerald-400' : 'text-rose-400'" x-text="(it.type === 'in' ? '+' : '-') + money(it.amt)"></span>
+          <button @click="del(it.id)" class="text-[11px] text-slate-500">Xóa</button>
+        </div>
+      </div>
+    </template>
+    <p x-show="items.length === 0" class="text-xs text-slate-500 text-center py-3">Chưa có khoản nào được ghi.</p>
+  </div>
+</section>
+<section x-data="cap_checklist()" x-init="init()" class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+  <div class="flex items-center justify-between">
+    <h3 class="text-sm font-bold text-white">Danh sách việc cần làm</h3>
+    <span class="text-[11px] text-slate-400"><span class="text-amber-400 font-bold" x-text="pct"></span>% hoàn thành</span>
+  </div>
+  <div class="h-1.5 bg-slate-800 rounded-full overflow-hidden"><div class="h-full bg-amber-500 transition-all" :style="'width:' + pct + '%'"></div></div>
+  <div class="flex space-x-2">
+    <input x-model="text" @keydown.enter="add()" placeholder="Thêm việc mới..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500">
+    <button @click="add()" class="px-4 bg-amber-500 text-slate-950 font-bold text-sm rounded-xl">Thêm</button>
+  </div>
+  <div class="space-y-1.5">
+    <template x-for="it in items" :key="it.id">
+      <div class="flex items-center space-x-3 p-2.5 bg-slate-950 border border-slate-800 rounded-xl">
+        <input type="checkbox" :checked="it.done" @change="toggle(it.id)" class="w-5 h-5 accent-amber-500">
+        <span class="flex-1 text-sm" :class="it.done ? 'line-through text-slate-500' : 'text-slate-100'" x-text="it.t"></span>
+        <button @click="del(it.id)" class="text-[11px] text-rose-400">Xóa</button>
+      </div>
+    </template>
+    <p x-show="items.length === 0" class="text-xs text-slate-500 text-center py-3">Chưa có việc nào. Hãy thêm việc đầu tiên.</p>
+  </div>
+  <button x-show="items.some(function (x) { return x.done; })" @click="clearDone()" class="text-[11px] text-slate-400 underline">Xóa các việc đã xong</button>
+</section>
+<section x-data="cap_journal()" x-init="init()" class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+  <div class="flex items-center justify-between">
+    <h3 class="text-sm font-bold text-white">Nhật ký &amp; ghi chú</h3>
+    <span class="text-[11px] text-slate-400"><span class="text-amber-400 font-bold" x-text="items.length"></span> mục</span>
+  </div>
+  <textarea x-model="text" rows="3" placeholder="Viết điều bạn muốn lưu lại..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white placeholder-slate-500"></textarea>
+  <button @click="add()" class="w-full py-2 bg-amber-500 text-slate-950 font-bold text-sm rounded-xl">Lưu lại</button>
+  <input x-show="items.length > 3" x-model="q" placeholder="Tìm trong nhật ký..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500">
+  <div class="space-y-2">
+    <template x-for="it in shown" :key="it.id">
+      <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl">
+        <p class="text-sm text-slate-100 whitespace-pre-wrap" x-text="it.t"></p>
+        <div class="flex items-center justify-between mt-2">
+          <span class="text-[11px] text-slate-500" x-text="fmt(it.ts)"></span>
+          <button @click="del(it.id)" class="text-[11px] text-rose-400">Xóa</button>
+        </div>
+      </div>
+    </template>
+    <p x-show="items.length === 0" class="text-xs text-slate-500 text-center py-3">Chưa có mục nào. Hãy viết mục đầu tiên.</p>
+  </div>
+</section>
+<section x-data="cap_export()" class="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3">
+  <h3 class="text-sm font-bold text-white">Sao lưu dữ liệu</h3>
+  <p class="text-xs text-slate-400">Dữ liệu của bạn nằm trên thiết bị này. Hãy tải bản sao lưu để giữ an toàn hoặc chuyển sang thiết bị khác.</p>
+  <button @click="exportAll()" class="w-full py-2 bg-amber-500 text-slate-950 font-bold text-sm rounded-xl">Tải bản sao lưu</button>
+  <label class="block w-full py-2 text-center bg-slate-950 border border-slate-800 text-slate-200 text-sm rounded-xl cursor-pointer">
+    Khôi phục từ bản sao lưu
+    <input type="file" accept="application/json,.json" class="hidden" @change="importAll($event)">
+  </label>
+  <p x-show="msg" class="text-xs text-amber-300" x-text="msg"></p>
+  <p class="text-[11px] text-slate-500">Bản ghi âm không nằm trong tệp sao lưu; hãy dùng nút "Tải về" ở từng bản ghi.</p>
+  <div x-show="hasSync" class="space-y-2 pt-3 border-t border-slate-800">
+    <p class="text-xs text-slate-300" x-text="syncLabel()"></p>
+    <button @click="makePair()" class="w-full py-2 bg-slate-950 border border-slate-800 text-slate-200 text-sm rounded-xl">Liên kết thiết bị khác</button>
+    <div x-show="pairLink" class="space-y-2">
+      <img :src="pairQr" alt="" class="w-32 h-32 mx-auto rounded-lg">
+      <input type="text" readonly :value="pairLink" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+      <p class="text-[11px] text-slate-500">Mở liên kết này trên thiết bị mới trong vòng 10 phút. Liên kết chỉ dùng được một lần.</p>
+    </div>
+  </div>
+</section>
+  </div>
+
+  <!-- Màn hình Cổng thanh toán -->
+  <div x-show="currentScreen === 'payment'" class="space-y-6">
+    <div class="border-b border-slate-800 pb-4">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Kênh Thanh Toán & Nâng Cấp</h2>
+      <p class="mt-1 text-sm text-slate-400">Quét mã VietQR chuyển khoản trực tiếp tới tài khoản chính chủ của người khởi tạo ứng dụng.</p>
+    </div>
+
+    <div class="max-w-md mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center space-y-5 shadow-lg">
+      <div class="inline-block bg-slate-950 p-3 rounded-xl border border-slate-800">
+        <img src="https://img.vietqr.io/image/970436-12345758-compact2.png" alt="Mã VietQR Chuyển Khoản" class="w-64 h-auto mx-auto rounded-lg">
+      </div>
+
+      <div class="space-y-2 text-left bg-slate-950 p-4 rounded-xl border border-slate-800 text-sm">
+        <div class="flex justify-between items-center py-1 border-b border-slate-800">
+          <span class="text-slate-400">Ngân hàng thụ hưởng:</span>
+          <span class="font-semibold text-white">Mã BIN 970436</span>
+        </div>
+        <div class="flex justify-between items-center py-1 border-b border-slate-800">
+          <span class="text-slate-400">Số tài khoản:</span>
+          <span class="font-mono font-bold text-amber-500">12345758</span>
+        </div>
+        <div class="flex justify-between items-center py-1">
+          <span class="text-slate-400">Chủ tài khoản:</span>
+          <span class="font-semibold text-white">NGUYEN VAN TEST</span>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-400 leading-normal">
+        Vui lòng kiểm tra kỹ thông tin số tài khoản và người thụ hưởng trước khi hoàn tất giao dịch.
+      </p>
+    </div>
+  </div>
+
+  <!-- Màn hình Cài đặt quản trị -->
+  <div x-show="currentScreen === 'admin'" class="space-y-6">
+    <div class="border-b border-slate-800 pb-4">
+      <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Cài Đặt & Quản Trị Hệ Thống</h2>
+      <p class="mt-1 text-sm text-slate-400">Xem thông tin định danh ứng dụng và quản lý dữ liệu lưu trữ.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+        <h3 class="text-base font-semibold text-white border-b border-slate-800 pb-2">Thông Tin Ứng Dụng</h3>
+        <div>
+          <span class="text-xs text-slate-400 block">Tên ứng dụng</span>
+          <span class="text-sm font-medium text-white">Ví Thông Minh - Quản Trị Thu Chi & Ngân Sách Cá Nhân</span>
+        </div>
+        <div>
+          <span class="text-xs text-slate-400 block">Mô tả nghiệp vụ</span>
+          <p class="text-xs text-slate-300 mt-1 leading-relaxed">
+            Nền tảng số hóa quản lý tài chính cá nhân tinh gọn, giúp theo dõi dòng tiền thu chi hàng ngày tức thì, phân bổ định mức ngân sách linh hoạt theo danh mục và trực quan hóa sức khỏe tài chính bằng biểu đồ dòng tiền tự động.
+          </p>
+        </div>
+        <div>
+          <span class="text-xs text-slate-400 block">Chức năng khả dụng</span>
+          <p class="text-xs text-slate-300 mt-1">Sổ thu chi, Danh sách việc cần làm, Nhật ký & ghi chú, Sao lưu dữ liệu.</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4 flex flex-col justify-between">
+        <div class="space-y-4">
+          <h3 class="text-base font-semibold text-white border-b border-slate-800 pb-2">Thông Tin Chủ Sở Hữu</h3>
+          <div>
+            <span class="text-xs text-slate-400 block">Chủ sở hữu thụ hưởng</span>
+            <span class="text-sm font-medium text-white">NGUYEN VAN TEST</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 block">Tài khoản thanh toán nhận tiền</span>
+            <span class="text-sm text-amber-500 font-mono">12345758 (Mã định danh 970436)</span>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-slate-800 space-y-3">
+          <div class="text-xs text-rose-400 font-medium">Khu vực kiểm soát dữ liệu:</div>
+          <button 
+            type="button" 
+            @click="purgeAccount()" 
+            class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-rose-950/40 hover:bg-rose-900/60 border border-rose-800/80 rounded-lg text-rose-200 text-sm font-semibold transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-rose-500/50">
+            Xóa Toàn Bộ Dữ Liệu Ứng Dụng
+          </button>
+          <p class="text-xs text-slate-500 text-center">Hành động này sẽ xóa toàn bộ các bản ghi và trả trạng thái ứng dụng về ban đầu.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+    <script>
+
+(function () {
+  var m = (location.pathname.match(/\/app\/([^\/?#]+)/) || [])[1] || 'local';
+  var COUNTED = ['journal', 'checklist', 'reminder', 'capsule', 'habit', 'gallery', 'expense', 'recorder'];
+  window.ggeStore = {
+    pid: m,
+    key: function (c) { return 'gge:' + m + ':' + c; },
+    get: function (c, d) { try { var v = localStorage.getItem(this.key(c)); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set: function (c, v) {
+      try { localStorage.setItem(this.key(c), JSON.stringify(v)); } catch (e) { return false; }
+      this._mark(c);
+      return true;
+    },
+    // Đồng bộ lên kho dữ liệu riêng của app (chỉ chạy khi app có máy chủ riêng: window.GGE_SYNC)
+    _pending: {},
+    _timer: null,
+    _tsKey: function (c) { return 'ggets:' + m + ':' + c; },
+    _mark: function (c) {
+      if (!window.GGE_SYNC) return;
+      try { localStorage.setItem(this._tsKey(c), String(Date.now())); } catch (e) {}
+      this._pending[c] = 1;
+      this._schedule(1500);
+    },
+    _schedule: function (ms) {
+      var self = this;
+      if (this._timer) clearTimeout(this._timer);
+      this._timer = setTimeout(function () { self._flush(); }, ms);
+    },
+    _flush: function () {
+      var self = this, caps = Object.keys(this._pending);
+      this._timer = null;
+      if (this._noauth) { this._pending = {}; return; }
+      if (!caps.length) return;
+      if (navigator.onLine === false) { this._schedule(15000); return; }
+      caps.forEach(function (c) {
+        var raw = null;
+        try { raw = localStorage.getItem(self.key(c)); } catch (e) {}
+        if (raw === null || raw.length > 60000) { delete self._pending[c]; return; }
+        var ts = Number(localStorage.getItem(self._tsKey(c)) || Date.now());
+        fetch('/api/sync/' + encodeURIComponent(c), {
+          method: 'PUT', headers: self._hdr(),
+          body: JSON.stringify({ v: JSON.parse(raw), ts: ts })
+        }).then(function (r) {
+          if (r.ok) {
+            if (Number(localStorage.getItem(self._tsKey(c)) || 0) === ts) delete self._pending[c];
+          } else if (r.status === 401) { self._noauth = true; self._pending = {}; }
+          else { self._schedule(60000); }
+        }).catch(function () { self._schedule(60000); });
+      });
+    },
+    _noauth: false,
+    _token: function () { try { return localStorage.getItem('gge_owner_token') || ''; } catch (e) { return ''; } },
+    _hdr: function () {
+      var h = { 'Content-Type': 'application/json' }, t = this._token();
+      if (t) h['X-Owner-Token'] = t;
+      return h;
+    },
+    start: function () {
+      if (!window.GGE_SYNC) return;
+      var self = this, q = '', done = function () { self.pull(); };
+      try { q = (location.search.match(/[?&]pair=([A-Za-z0-9]+)/) || [])[1] || ''; } catch (e) {}
+      if (q) {
+        fetch('/api/owner/join', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code: q }) })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (j) {
+            if (j && j.token) { try { localStorage.setItem('gge_owner_token', j.token); } catch (e) {} self._noauth = false; }
+            try { history.replaceState(null, '', location.pathname); } catch (e) {}
+            done();
+          }).catch(done);
+        return;
+      }
+      fetch('/api/owner/state').then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
+        if (j && j.claimed === true && self._token()) { done(); return; }
+        if (j && j.claimed === false) {
+          try { localStorage.removeItem('gge_owner_token'); } catch (e) {}
+          return fetch('/api/owner/claim', { method: 'POST' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (c) {
+            if (c && c.token) { try { localStorage.setItem('gge_owner_token', c.token); } catch (e) {} }
+            done();
+          });
+        }
+        if (j) self._noauth = true;
+      }).catch(function () {});
+    },
+    pull: function () {
+      if (!window.GGE_SYNC) return;
+      var self = this, prefix = 'gge:' + m + ':';
+      if (this._noauth) return;
+      fetch('/api/sync', { headers: self._hdr() }).then(function (r) {
+        if (r.status === 401) self._noauth = true;
+        return r.ok ? r.json() : null;
+      }).then(function (j) {
+        if (!j || !j.items) return;
+        var items = j.items, changed = false, local = [];
+        try {
+          for (var i = 0; i < localStorage.length; i++) {
+            var k = localStorage.key(i);
+            if (k && k.indexOf(prefix) === 0) local.push(k.slice(prefix.length));
+          }
+        } catch (e) {}
+        Object.keys(items).forEach(function (c) {
+          var it = items[c] || {}, lts = Number(localStorage.getItem(self._tsKey(c)) || 0), sts = Number(it.ts || 0);
+          if (sts > lts) {
+            try {
+              localStorage.setItem(self.key(c), JSON.stringify(it.v));
+              localStorage.setItem(self._tsKey(c), String(sts));
+              changed = true;
+            } catch (e) {}
+          }
+        });
+        local.forEach(function (c) {
+          var it = items[c], lts = Number(localStorage.getItem(self._tsKey(c)) || 0), sts = it ? Number(it.ts || 0) : -1;
+          if (sts < 0 || lts > sts) self._mark(c);
+        });
+        if (changed && !sessionStorage.getItem('gge_sync_reloaded')) {
+          try { sessionStorage.setItem('gge_sync_reloaded', '1'); } catch (e) {}
+          location.reload();
+        } else { try { Alpine.store('gge').refresh(); } catch (e) {} }
+      }).catch(function () {});
+    },
+    save: function (c, v) { var ok = this.set(c, v); try { Alpine.store('gge').refresh(); } catch (e) {} return ok; },
+    uid: function () { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); },
+    fmt: function (ts) {
+      try { return new Date(ts).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; }
+    },
+    day: function (d) {
+      d = d || new Date();
+      var mm = ('0' + (d.getMonth() + 1)).slice(-2), dd = ('0' + d.getDate()).slice(-2);
+      return d.getFullYear() + '-' + mm + '-' + dd;
+    },
+    beep: function () {
+      try {
+        var C = window.AudioContext || window.webkitAudioContext;
+        var a = new C(), o = a.createOscillator(), g = a.createGain();
+        o.connect(g); g.connect(a.destination); o.frequency.value = 880; g.gain.value = 0.15; o.start();
+        setTimeout(function () { try { o.stop(); a.close(); } catch (e) {} }, 450);
+      } catch (e) {}
+      try { if (navigator.vibrate) navigator.vibrate([200, 100, 200]); } catch (e) {}
+    },
+    total: function () {
+      var n = 0;
+      for (var i = 0; i < COUNTED.length; i++) {
+        var v = this.get(COUNTED[i], []);
+        if (Array.isArray(v)) n += v.length;
+      }
+      return n;
+    },
+    clearAll: function () {
+      try {
+        var prefix = 'gge:' + m + ':', del = [];
+        for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf(prefix) === 0) del.push(k); }
+        del.forEach(function (k) { localStorage.removeItem(k); });
+        var tsPrefix = 'ggets:' + m + ':', del2 = [];
+        for (var j = 0; j < localStorage.length; j++) { var k2 = localStorage.key(j); if (k2 && k2.indexOf(tsPrefix) === 0) del2.push(k2); }
+        del2.forEach(function (k) { localStorage.removeItem(k); });
+        this._pending = {};
+      } catch (e) {}
+      try { indexedDB.deleteDatabase('gge:' + m + ':audio'); } catch (e) {}
+      try { Alpine.store('gge').refresh(); } catch (e) {}
+    }
+  };
+  if (window.GGE_SYNC) {
+    window.addEventListener('online', function () { window.ggeStore._schedule(500); });
+    setTimeout(function () { window.ggeStore.start(); }, 300);
+  }
+  document.addEventListener('alpine:init', function () {
+    Alpine.store('gge', {
+      items: window.ggeStore.total(),
+      refresh: function () { this.items = window.ggeStore.total(); }
+    });
+  });
+})();
+
+function cap_expense() {
+  return {
+    items: [], type: 'out', amt: null, text: '',
+    init: function () { this.items = ggeStore.get('expense', []); },
+    fmt: function (t) { return ggeStore.fmt(t); },
+    money: function (n) { try { return Number(n || 0).toLocaleString('vi-VN') + 'đ'; } catch (e) { return n + 'đ'; } },
+    add: function () {
+      var a = Number(this.amt);
+      if (!a || a <= 0) return;
+      this.items.unshift({ id: ggeStore.uid(), type: this.type, amt: a, t: this.text.trim(), ts: Date.now() });
+      this.amt = null; this.text = ''; ggeStore.save('expense', this.items);
+    },
+    del: function (id) { this.items = this.items.filter(function (x) { return x.id !== id; }); ggeStore.save('expense', this.items); },
+    get sumIn() { return this.items.filter(function (x) { return x.type === 'in'; }).reduce(function (s, x) { return s + x.amt; }, 0); },
+    get sumOut() { return this.items.filter(function (x) { return x.type === 'out'; }).reduce(function (s, x) { return s + x.amt; }, 0); }
+  };
+}
+function cap_checklist() {
+  return {
+    items: [], text: '',
+    init: function () { this.items = ggeStore.get('checklist', []); },
+    add: function () {
+      var t = this.text.trim(); if (!t) return;
+      this.items.push({ id: ggeStore.uid(), t: t, done: false });
+      this.text = ''; ggeStore.save('checklist', this.items);
+    },
+    toggle: function (id) { this.items.forEach(function (x) { if (x.id === id) x.done = !x.done; }); ggeStore.save('checklist', this.items); },
+    del: function (id) { this.items = this.items.filter(function (x) { return x.id !== id; }); ggeStore.save('checklist', this.items); },
+    clearDone: function () { this.items = this.items.filter(function (x) { return !x.done; }); ggeStore.save('checklist', this.items); },
+    get pct() {
+      if (!this.items.length) return 0;
+      return Math.round(this.items.filter(function (x) { return x.done; }).length * 100 / this.items.length);
+    }
+  };
+}
+function cap_journal() {
+  return {
+    items: [], text: '', q: '',
+    init: function () { this.items = ggeStore.get('journal', []); },
+    fmt: function (t) { return ggeStore.fmt(t); },
+    add: function () {
+      var t = this.text.trim(); if (!t) return;
+      this.items.unshift({ id: ggeStore.uid(), t: t, ts: Date.now() });
+      this.text = ''; ggeStore.save('journal', this.items);
+    },
+    del: function (id) { this.items = this.items.filter(function (x) { return x.id !== id; }); ggeStore.save('journal', this.items); },
+    get shown() {
+      var q = this.q.trim().toLowerCase();
+      return q ? this.items.filter(function (x) { return x.t.toLowerCase().indexOf(q) > -1; }) : this.items;
+    }
+  };
+}
+function cap_export() {
+  return {
+    msg: '',
+    hasSync: !!window.GGE_SYNC,
+    pairLink: '',
+    pairQr: '',
+    syncLabel: function () {
+      if (ggeStore._noauth) return 'Thiết bị này chưa được liên kết nên chưa đồng bộ. Hãy tạo liên kết từ thiết bị đã dùng ứng dụng đầu tiên.';
+      return 'Dữ liệu của bạn còn được lưu trong kho riêng của ứng dụng (trừ ảnh và bản ghi âm).';
+    },
+    makePair: function () {
+      var self = this;
+      fetch('/api/owner/pair-code', { method: 'POST', headers: ggeStore._hdr() })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          if (!j || !j.code) { self.msg = 'Chưa tạo được liên kết. Hãy thử lại.'; return; }
+          self.pairLink = location.origin + '/?pair=' + j.code;
+          self.pairQr = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(self.pairLink);
+        }).catch(function () { self.msg = 'Chưa tạo được liên kết. Hãy thử lại.'; });
+    },
+    exportAll: function () {
+      var out = {}, prefix = 'gge:' + ggeStore.pid + ':';
+      try {
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i);
+          if (k && k.indexOf(prefix) === 0) out[k.slice(prefix.length)] = JSON.parse(localStorage.getItem(k));
+        }
+      } catch (e) {}
+      var blob = new Blob([JSON.stringify({ app: ggeStore.pid, saved: Date.now(), data: out })], { type: 'application/json' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = 'sao-luu-' + ggeStore.day() + '.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      this.msg = 'Đã tạo bản sao lưu.';
+    },
+    importAll: function (ev) {
+      var self = this, f = ev.target.files && ev.target.files[0]; ev.target.value = '';
+      if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        try {
+          var j = JSON.parse(rd.result), d = j && j.data;
+          if (!d || typeof d !== 'object') throw new Error('x');
+          if (!confirm('Khôi phục sẽ thay thế dữ liệu hiện có trên thiết bị. Tiếp tục?')) return;
+          Object.keys(d).forEach(function (k) { ggeStore.set(k, d[k]); });
+          self.msg = 'Đã khôi phục. Đang tải lại...';
+          setTimeout(function () { location.reload(); }, 800);
+        } catch (e) { self.msg = 'Tệp sao lưu không hợp lệ.'; }
+      };
+      rd.readAsText(f);
+    }
+  };
+}
+    </script>
+    <script>
+        function childAppRuntime() {
+            return {
+                currentScreen: 'overview',
+                newTitle: '',
+                records: [],
+                async init() {
+                    await this.loadRecords();
+                },
+                async loadRecords() {
+                    try {
+                        let res = await fetch('/api/data');
+                        if (res.ok) {
+                            let data = await res.json();
+                            this.records = data.data || [];
+                        }
+                    } catch (e) { console.error(e); }
+                },
+                async createRecord() {
+                    if (!this.newTitle) return;
+                    try {
+                        let res = await fetch('/api/data', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ title: this.newTitle })
+                        });
+                        if (res.ok) {
+                            this.newTitle = '';
+                            await this.loadRecords();
+                        }
+                    } catch (e) { alert('Lỗi kết nối máy chủ'); }
+                },
+                async purgeAccount() {
+                    if (!confirm('Xác nhận xóa dữ liệu ứng dụng chuẩn Apple Store 5.1.1(v)?')) return;
+                    try { if (window.ggeStore) window.ggeStore.clearAll(); } catch (e) {}
+                    try {
+                        let res = await fetch('/api/v1/account', {
+                            method: 'DELETE',
+                            headers: { 'Content-Type': 'application/json', 'X-Owner-Token': (function () { try { return localStorage.getItem('gge_owner_token') || ''; } catch (e) { return ''; } })() },
+                            body: JSON.stringify({ confirmation: 'CONFIRM' })
+                        });
+                        if (res.ok) {
+                            alert('Đã xóa dữ liệu an toàn.');
+                            await this.loadRecords();
+                        }
+                    } catch (e) { alert('Đã xóa dữ liệu trên thiết bị.'); }
+                }
+            }
+        }
+    </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(function(){});});}</script>
+</body>
+</html>
